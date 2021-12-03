@@ -49,7 +49,6 @@ let calculateMvmt = (data) => {
       h+= data[i][1];
 
       v += aim * data[i][1]
-      console.log(v)
     }
     if (data[i][0] === 'up') {
       aim-= data[i][1]
@@ -59,7 +58,7 @@ let calculateMvmt = (data) => {
     }
   }
 
-  console.log(h * v)
+  return h * v
 }
 
 calculateMvmt(data)
