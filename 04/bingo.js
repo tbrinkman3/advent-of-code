@@ -62,14 +62,6 @@ const bingoBoards = fs.readFileSync('./bingoBoards-input.txt').toString('utf-8')
 const sampleNums = fs.readFileSync('./sampleNums.txt').toString('utf-8').split(',').map(i => Number(i));
 const sampleBoards = fs.readFileSync('./sampleBoards.txt').toString('utf-8').split(/\n\s*\n/).map(b => b.split('\n')).map(board => board.map(row => row.split(' ').filter(r => r !== '').map(i => Number(i))));
 
-
-//console.log(sampleNums, sampleBoards)
-
-//console.log(bingoBoards)
-
-console.log(sampleBoards)
-
-
 class BingoBoard {
   constructor(board) {
       this.board = board;
@@ -141,7 +133,6 @@ let boards = bingoBoards.map(board => new BingoBoard(board));
 const findBingo = (nums, boards) => {
   for (const num of nums) {
     for(const board of boards) {
-      //console.log(board.calcFinalScore)
       board.placePiece(num);
       board.checkBoard();
       if (board.winner) {
@@ -156,21 +147,23 @@ const findLastBingo = (nums, boards) => {
   const winners = [];
   for(const num of nums) {
     for(const board of boards) {
-      board.placePiece(num);
-      board.checkBoard();
-      if (board.winner) {
-        board.tallyBoard();
-        let final = board.calcFinalScore(num);
-        winners.push(final);
+      if (!board.winner) {
+        board.placePiece(num);
+        board.checkBoard();
+        if (board.winner) {
+          board.tallyBoard();
+          let final = board.calcFinalScore(num);
+          winners.push(final);
+        }
       }
     }
   }
-
+  console.log(winners)
   return winners[winners.length -1];
 }
 
-console.log(findBingo(bingoNums, boards))
-
+//console.log(findBingo(bingoNums, boards))
+console.log(findLastBingo(bingoNums, boards))
 
 //console.log(bingoBoards)
 
