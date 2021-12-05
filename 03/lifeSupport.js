@@ -49,9 +49,7 @@ const calculateLifeSupportRating = (data) => {
         zero++;
       }
     }
-
     return one === zero ? 'equal' : one > zero ? '1' : '0';
-    return one > zero ? '1' : '0';
   }
 
   const calcAirQuality = (data, i, quality) => {
@@ -59,8 +57,24 @@ const calculateLifeSupportRating = (data) => {
       return parseInt(data[0], 2);
     }
 
+    let commonBit = mostCommonBit(data, i);
 
+    if (commonBit === 'equal') {
+      commonBit = quality === 'o2' ? '1' : '0';
+    } else {
+      //find least common for co2 scrubber
+      if (quality === 'co2') {
+        commonBit = commonBit === '1' ? '0' : '1'
+      }
+    }
+    const filteredData = data.filter(bin =>  bin[i] === commonBit);
+    return calcAirQuality(filteredData, i + 1, quality)
   }
+
+  let oxygenGeneratorRating = calcAirQuality(data, 0, 'o2');
+  let carbondDioxideScrubber = calcAirQuality(data, 0, 'co2')
+
+  return oxygenGeneratorRating * carbondDioxideScrubber;
 }
 
-calculateLifeSupportRating(sampleData)
+console.log(calculateLifeSupportRating(data))
