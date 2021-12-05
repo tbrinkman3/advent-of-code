@@ -56,12 +56,16 @@ To guarantee victory against the giant squid, figure out which board will win fi
 
 const fs = require('fs');
 
+//Formatting input to arrays of numbers
+
 const bingoNums = fs.readFileSync('./bingoNum-input.txt').toString('utf-8').split(',').map(i => Number(i));
 const bingoBoards = fs.readFileSync('./bingoBoards-input.txt').toString('utf-8').split(/\n\s*\n/).map(b => b.split('\n')).map(board => board.map(row => row.split(' ').filter(r => r !=='').map(i => Number(i))));
 
 const sampleNums = fs.readFileSync('./sampleNums.txt').toString('utf-8').split(',').map(i => Number(i));
 const sampleBoards = fs.readFileSync('./sampleBoards.txt').toString('utf-8').split(/\n\s*\n/).map(b => b.split('\n')).map(board => board.map(row => row.split(' ').filter(r => r !== '').map(i => Number(i))));
 
+
+//Class with helper methods
 class BingoBoard {
   constructor(board) {
       this.board = board;
@@ -158,7 +162,6 @@ const findLastBingo = (nums, boards) => {
       }
     }
   }
-  console.log(winners)
   return winners[winners.length -1];
 }
 
