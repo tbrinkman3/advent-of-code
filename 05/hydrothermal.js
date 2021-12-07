@@ -64,22 +64,25 @@ class Coord{
 
   }
   isStraightLine(){
+    this.lessY = this.y1 < this.y2 ? this.y1 : this.y2;
+    this.greaterY = this.y1 > this.y2 ? this.y1 : this.y2;
+    this.lessX = this.x1 < this.x2 ? this.x1 : this.x2;
+    this.greaterX = this.x1 > this.x2 ? this.x1 :this.x2;
+
     if (this.x1 === this.x2 && this.y1 !== this.y2) {
       this.constant = this.x1;
-      this.lessY = this.y1 < this.y2 ? this.y1 : this.y2;
-      this.greaterY = this.y1 > this.y2 ? this.y1 : this.y2;
       this.getStraightCoords(this.lessY, this.greaterY, this.constant, 'y')
       return true;
     }
 
     if (this.y1 === this.y2 && this.x1 !== this.x2) {
       this.constant = this.y1;
-      this.lessX = this.x1 < this.x2 ? this.x1 : this.x2;
-      this.greaterX = this.x1 > this.x2 ? this.x1 :this.x2;
       this.getStraightCoords(this.lessX, this.greaterX, this.constant, 'x')
       return true;
     }
-    this.x1 === this.x2 && this.y1 === this.y2 ? console.log('no movement') : console.log('edge case error')
+    if(this.y1 !== this.y2 && this.x1 !== this.x2) {
+      this.getDiagonalCoords(this.lessX, this.greaterX, this.lessY, this.greaterY)
+    }
   }
   getStraightCoords(p1, p2, c, axis) {
     if(axis === 'x') {
@@ -92,6 +95,8 @@ class Coord{
       }
     }
   }
+  getDiagonalCoords(lessX, greaterX, lessY, greaterY) {
+
 }
 
 
