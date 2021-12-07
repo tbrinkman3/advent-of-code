@@ -41,23 +41,59 @@ Consider only horizontal and vertical lines. At how many points do at least two 
 
 var fs = require('fs');
 //array or arrays or coord arrays
-let sampleData = fs.readFileSync('./sample-input.txt')
-  .toString('utf-8')
-  .split('\n')
-  .map(coords => coords.replace(/\s/g, '').split('->').map(coord => coord.split(',')));
+let sampleData1 = fs.readFileSync('./sample-input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g, '').split('->').map(coord => coord.split(',')));
 
+let sampleData2 = fs.readFileSync('./sample-input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g,'').replace(/->/g, ',').split(','))
+
+console.log(sampleData2)
+
+class Coord{
+  constructor(x1,y1,x2,y2) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+  }
+  isStraightLine(){
+    return this.x1 === this.x2 || this.y1 === this.y2
+  }
+  getCoords() {
+
+  }
+}
+  //coord class
+  //stores same val
+  //stores two differing values
+  //coords covered array
+
+  //method to calculate coord object??
 
 const findHydroThermalVents = (coords) => {
-  const isStraightLine = (coords) => {
-    //shoudl be array of array of coords
-    if(coords[0][0] === coords[1][0] || coords[0][1] === coords[1][1]) {
-      return true
-    } else {
-      return false
-    }
-  }
+  let test = coords.map(coord => {
+
+    let toNumbers = coord.map(num => Number(num));
+    const [x1,y1,x2,y2] = toNumbers;
+
+    return new Coord(x1,y1,x2,y2)
+
+  })
+  // const isStraightLine = (coords) => {
+  //   //shoudl be array of array of coords
+  //   if(coords[0][0] === coords[1][0] || coords[0][1] === coords[1][1]) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
+console.log(test)
+  //iterate over coords
+    //if straight line
+      //find differing coord
+      //at each index
+      //create coord to push to push to obj
+      //if
 
 
 }
-findHydroThermalVents(sampleData)
+findHydroThermalVents(sampleData2)
 //console.log(sampleData)
