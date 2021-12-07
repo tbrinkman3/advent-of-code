@@ -61,12 +61,7 @@ class Coord{
 
   }
 }
-  //coord class
-  //stores same val
-  //stores two differing values
-  //coords covered array
 
-  //method to calculate coord object??
 
 const findHydroThermalVents = (coords) => {
   let test = coords.map(coord => {
@@ -77,22 +72,6 @@ const findHydroThermalVents = (coords) => {
     return new Coord(x1,y1,x2,y2)
 
   })
-  // const isStraightLine = (coords) => {
-  //   //shoudl be array of array of coords
-  //   if(coords[0][0] === coords[1][0] || coords[0][1] === coords[1][1]) {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
-console.log(test)
-  //iterate over coords
-    //if straight line
-      //find differing coord
-      //at each index
-      //create coord to push to push to obj
-      //if
-
 
 }
 findHydroThermalVents(sampleData2)
