@@ -64,7 +64,6 @@ class Coord{
       this.constant = this.x1;
       this.lessY = this.y1 < this.y2 ? this.y1 : this.y2;
       this.greaterY = this.y1 > this.y2 ? this.y1 : this.y2;
-
       this.getStraightCoords(this.lessY, this.greaterY, this.constant, 'y')
       return true;
     }
@@ -98,12 +97,9 @@ const findHydroThermalVents = (coords) => {
   let pointsOfOverlap = 0;
 
   let lineData = coords.map(coord => {
-
     let toNumbers = coord.map(num => Number(num));
     const [x1,y1,x2,y2] = toNumbers;
-
     return new Coord(x1,y1,x2,y2)
-
   })
   //calculate all coords
   for (let line of lineData) {
