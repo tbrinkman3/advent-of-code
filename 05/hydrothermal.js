@@ -89,12 +89,6 @@ class Coord{
       }
     }
   }
-  getDiffOfX() {
-    this.diffOfX = Math.abs(this.x1 - this.x2)
-  }
-  getDiffOfY() {
-    this.diffOfY = Math.abs(this.y1 - this.y2)
-  }
 }
 
 
