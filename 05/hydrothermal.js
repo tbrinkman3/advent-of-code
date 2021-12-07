@@ -53,13 +53,27 @@ class Coord{
     this.y1 = y1;
     this.x2 = x2;
     this.y2 = y2;
+    this.coords = [];
   }
   isStraightLine(){
     return this.x1 === this.x2 || this.y1 === this.y2
   }
   getCoords() {
+    if (this.x1 !== this.x2) {
+      if (this.x1 > this.x2)  {
 
-  }
+      } else {
+
+      }
+    } else if (this.y1 !== this.y2) {
+      if (this.y1 > this.y2) {
+
+      } else {
+
+      }
+    } else {
+      console.log('its a diag!!!')
+    }
 }
 
 
