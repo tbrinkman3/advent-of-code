@@ -81,7 +81,7 @@ class Coord{
       return true;
     }
     if(this.y1 !== this.y2 && this.x1 !== this.x2) {
-      this.getDiagonalCoords(this.lessX, this.greaterX, this.lessY, this.greaterY)
+      this.getDiagonalCoords()
     }
   }
   getStraightCoords(p1, p2, c, axis) {
@@ -95,8 +95,20 @@ class Coord{
       }
     }
   }
-  getDiagonalCoords(lessX, greaterX, lessY, greaterY) {
+  getDiagonalCoords() {
+    let xChange = this.x1 > this.x2 ? -1 : 1;
+    let yChange = this.y1 > this.y2 ? -1 : 1;
 
+    let xCoord = this.x1;
+    let yCoord = this.y1;
+
+    while(xCoord !== this.x2 + xChange && yCoord !== this.y2 + yChange) {
+      this.coords.push(`${xCoord}-${yCoord}`);
+
+      xCoord += xChange;
+      yCoord += yChange;
+    }
+  }
 }
 
 
@@ -119,7 +131,7 @@ const findHydroThermalVents = (coords) => {
       })
     }
   }
-
+  //console.log(placedCoordinates)
   for(let point in placedCoordinates) {
     if (placedCoordinates[point] > 1) {
       pointsOfOverlap++;
