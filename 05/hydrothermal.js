@@ -43,6 +43,10 @@ var fs = require('fs');
 
 let sampleData = fs.readFileSync('./sample-input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g,'').replace(/->/g, ',').split(','))
 
+let realData = fs.readFileSync('input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g,'').replace(/->/g, ',').split(','))
+
+//console.log(realData)
+
 
 class Coord{
   constructor(x1,y1,x2,y2) {
@@ -119,5 +123,5 @@ const findHydroThermalVents = (coords) => {
 
   console.log(pointsOfOverlap)
 }
-findHydroThermalVents(sampleData)
+findHydroThermalVents(realData)
 //console.log(sampleData)
