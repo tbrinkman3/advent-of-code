@@ -54,31 +54,33 @@ class Coord{
     this.x2 = x2;
     this.y2 = y2;
     this.coords = [];
+
+    this.lessX = null;
+    this.greaterX = null;
+    this.lessY = null;
+    this.lessX = null;
+    this.diffOfX = null;
+    this.diffOfY = null;
   }
   isStraightLine(){
     return this.x1 === this.x2 || this.y1 === this.y2
   }
-  getCoords() {
-    if (this.x1 !== this.x2) {
-      if (this.x1 > this.x2)  {
-
-      } else {
-
-      }
-    } else if (this.y1 !== this.y2) {
-      if (this.y1 > this.y2) {
-
-      } else {
-
-      }
-    } else {
-      console.log('its a diag!!!')
-    }
+  getStraightCoords(p1, p2, c) {
+   for(let i = p1; i < p2; i++) {
+     this.coords.push(`${i}-${c}`)
+   }
+  }
+  getDiffOfX() {
+    this.diffOfX = Math.abs(this.x1 - this.x2)
+  }
+  getDiffOfY() {
+    this.diffOfY = Math.abs(this.y1 - this.y2)
+  }
 }
 
 
 const findHydroThermalVents = (coords) => {
-  let test = coords.map(coord => {
+  let lineData = coords.map(coord => {
 
     let toNumbers = coord.map(num => Number(num));
     const [x1,y1,x2,y2] = toNumbers;
@@ -86,7 +88,11 @@ const findHydroThermalVents = (coords) => {
     return new Coord(x1,y1,x2,y2)
 
   })
+  for(let line of lineData) {
+    if (line.isStraightLine()) {
 
+    }
+  }
 }
 findHydroThermalVents(sampleData2)
 //console.log(sampleData)
