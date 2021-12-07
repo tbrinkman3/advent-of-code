@@ -40,12 +40,9 @@ Consider only horizontal and vertical lines. At how many points do at least two 
 */
 
 var fs = require('fs');
-//array or arrays or coord arrays
-let sampleData1 = fs.readFileSync('./sample-input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g, '').split('->').map(coord => coord.split(',')));
 
-let sampleData2 = fs.readFileSync('./sample-input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g,'').replace(/->/g, ',').split(','))
+let sampleData = fs.readFileSync('./sample-input.txt').toString('utf-8').split('\n').map(coords => coords.replace(/\s/g,'').replace(/->/g, ',').split(','))
 
-console.log(sampleData2)
 
 class Coord{
   constructor(x1,y1,x2,y2) {
@@ -58,17 +55,39 @@ class Coord{
     this.lessX = null;
     this.greaterX = null;
     this.lessY = null;
-    this.lessX = null;
-    this.diffOfX = null;
-    this.diffOfY = null;
+    this.greaterY = null;
+    this.constant = null;
+
   }
   isStraightLine(){
-    return this.x1 === this.x2 || this.y1 === this.y2
+    if (this.x1 === this.x2 && this.y1 !== this.y2) {
+      this.constant = this.x1;
+      this.lessY = this.y1 < this.y2 ? this.y1 : this.y2;
+      this.greaterY = this.y1 > this.y2 ? this.y1 : this.y2;
+
+      this.getStraightCoords(this.lessY, this.greaterY, this.constant, 'y')
+      return true;
+    }
+
+    if (this.y1 === this.y2 && this.x1 !== this.x2) {
+      this.constant = this.y1;
+      this.lessX = this.x1 < this.x2 ? this.x1 : this.x2;
+      this.greaterX = this.x1 > this.x2 ? this.x1 :this.x2;
+      this.getStraightCoords(this.lessX, this.greaterX, this.constant, 'x')
+      return true;
+    }
+    this.x1 === this.x2 && this.y1 === this.y2 ? console.log('no movement') : console.log('edge case error')
   }
-  getStraightCoords(p1, p2, c) {
-   for(let i = p1; i < p2; i++) {
-     this.coords.push(`${i}-${c}`)
-   }
+  getStraightCoords(p1, p2, c, axis) {
+    if(axis === 'x') {
+      for(let i = p1; i <= p2; i++) {
+        this.coords.push(`${i}-${c}`)
+      }
+    } else {
+      for(let i = p1; i <= p2; i++) {
+        this.coords.push(`${c}-${i}`)
+      }
+    }
   }
   getDiffOfX() {
     this.diffOfX = Math.abs(this.x1 - this.x2)
@@ -80,6 +99,10 @@ class Coord{
 
 
 const findHydroThermalVents = (coords) => {
+
+  let placedCoordinates = {};
+  let pointsOfOverlap = 0;
+
   let lineData = coords.map(coord => {
 
     let toNumbers = coord.map(num => Number(num));
@@ -88,11 +111,23 @@ const findHydroThermalVents = (coords) => {
     return new Coord(x1,y1,x2,y2)
 
   })
-  for(let line of lineData) {
-    if (line.isStraightLine()) {
-
+  //calculate all coords
+  for (let line of lineData) {
+    line.isStraightLine();
+    if(line.coords.length) {
+      line.coords.forEach(coord => {
+        placedCoordinates[coord] ? placedCoordinates[coord] += 1 : placedCoordinates[coord] = 1;
+      })
     }
   }
+
+  for(let point in placedCoordinates) {
+    if (placedCoordinates[point] > 1) {
+      pointsOfOverlap++;
+    }
+  }
+
+  console.log(pointsOfOverlap)
 }
-findHydroThermalVents(sampleData2)
+findHydroThermalVents(sampleData)
 //console.log(sampleData)
