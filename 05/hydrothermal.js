@@ -63,7 +63,7 @@ class Coord{
     this.constant = null;
 
   }
-  isStraightLine(){
+  getLineCoords(){
     this.lessY = this.y1 < this.y2 ? this.y1 : this.y2;
     this.greaterY = this.y1 > this.y2 ? this.y1 : this.y2;
     this.lessX = this.x1 < this.x2 ? this.x1 : this.x2;
@@ -74,7 +74,6 @@ class Coord{
       this.getStraightCoords(this.lessY, this.greaterY, this.constant, 'y')
       return true;
     }
-
     if (this.y1 === this.y2 && this.x1 !== this.x2) {
       this.constant = this.y1;
       this.getStraightCoords(this.lessX, this.greaterX, this.constant, 'x')
@@ -104,7 +103,6 @@ class Coord{
 
     while(xCoord !== this.x2 + xChange && yCoord !== this.y2 + yChange) {
       this.coords.push(`${xCoord}-${yCoord}`);
-
       xCoord += xChange;
       yCoord += yChange;
     }
@@ -113,7 +111,6 @@ class Coord{
 
 
 const findHydroThermalVents = (coords) => {
-
   let placedCoordinates = {};
   let pointsOfOverlap = 0;
 
@@ -122,22 +119,20 @@ const findHydroThermalVents = (coords) => {
     const [x1,y1,x2,y2] = toNumbers;
     return new Coord(x1,y1,x2,y2)
   })
-  //calculate all coords
+  //add coords to store
   for (let line of lineData) {
-    line.isStraightLine();
+    line.getLineCoords();
     if(line.coords.length) {
       line.coords.forEach(coord => {
         placedCoordinates[coord] ? placedCoordinates[coord] += 1 : placedCoordinates[coord] = 1;
       })
     }
   }
-  //console.log(placedCoordinates)
   for(let point in placedCoordinates) {
     if (placedCoordinates[point] > 1) {
       pointsOfOverlap++;
     }
   }
-
   console.log(pointsOfOverlap)
 }
 findHydroThermalVents(realData)
