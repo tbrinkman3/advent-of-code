@@ -1,41 +1,29 @@
 var fs = require('fs');
 
-const sampleData = fs.readFileSync('sample-data.txt').toString('utf-8').split(',').map(num => Number(num))
-const realData = fs.readFileSync('data.txt').toString('utf-8').split(',').map(num => Number(num))
+const sampleData = fs.readFileSync('sample-data.txt').toString('utf-8').split(',').map(num => Number(num)).sort((a,b) => a-b)
+const realData = fs.readFileSync('data.txt').toString('utf-8').split(',').map(num => Number(num)).sort((a,b) => a-b);
 
-console.log(sampleData)
+//console.log(sampleData)
 
 const moveCrabs = (input) => {
+  //get inital cost array
+  let diffPoints = Array.from(new Set(input));
 
-  const mostCommonLocation = (locations) => {
-    let mostCommonCount = 0;
-    let mostCommonLoc;
+  let costArray = input.map(point => Math.abs(point - input[0]));
+  let cost = costArray.reduce((prev, curr) => {return prev + curr}, 0);
 
-    for(let loc in locations) {
-      if (locations[loc] > mostCommonCount) {
-        mostCommonCount = locations[loc];
-        mostCommonLoc = loc;
-      }
+  for(let i = 1; i < diffPoints.length; i++) {
+    let newCostArray = costArray.map(point => Math.abs(point - diffPoints[i]));
+    let newCost = newCostArray.slice().reduce((prev, curr) => {return prev + curr}, 0);
+    if(newCost > cost) {
+      break;
+    } else {
+      cost = newCost
     }
-    return mostCommonLoc;
   }
 
-  let crabLocations = {};
 
-  for(let crab of input) {
-    crabLocations[crab] ? crabLocations[crab] += 1 : crabLocations[crab] = 1;
-  }
-
-  let fuelCost = 0;
-  let mostCommonCrabLocation = mostCommonLocation(crabLocations)
-
-  for (let loc of input) {
-    let moveCost = Math.abs(loc - mostCommonCrabLocation);
-
-    fuelCost += moveCost
-  }
-  return fuelCost;
-  //mostCommonLocation(crabLocations)
+  return cost
 }
 
 console.log(moveCrabs(realData))
