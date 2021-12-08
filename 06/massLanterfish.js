@@ -27,7 +27,6 @@ const calcMassLanternFish = (input,day) => {
 
     for(let i = 8; i > -1; i--) {
       if (i === 0) {
-        console.log('got here')
         fishCount['8'] = birthCount;
         fishCount['6']+= birthCount;
       } else {
@@ -40,12 +39,11 @@ const calcMassLanternFish = (input,day) => {
   }
 
   let totalFishes = 0;
-
+  //tally fishes
   for(let count in fishCount) {
     totalFishes+= fishCount[count]
   }
   console.log(totalFishes)
-  //console.log(fishCount)
 }
 
 calcMassLanternFish(realData,256)
