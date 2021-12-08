@@ -26,4 +26,6 @@ const calculateLanternFish = (input, days) => {
   return input.length
 }
 
-console.log(calculateLanternFish(realData, 80))
+//refactor for less space.......
+
+console.log(calculateLanternFish(sampleData, 256))
