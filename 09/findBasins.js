@@ -36,33 +36,44 @@ const findLowPoints = (heights) => {
 const findBasinSize = (r, c, heights, prevDirection) => {
   let size = 0;
 
-  const getSize = (r,c,prevDirection) => {
+  const getSize = (r,c,prevDirection, prevValue) => {
+
     size++;
-    if (r < 0 || r > heights.length || c < 0 || c > heights[0].length) {
-      return;
-    }
+    //the incrementing and decrements is affecting them
+    let plusR = r + 1;
+    let minusR = r - 1;
+    let plusC = c + 1;
+    let minusC = c - 1;
+
     let directions = {
-      up: [r > 0 ? heights[r-1][c] : -1, r - 1, c],
-      down: [r + 1 < heights.length ? heights[r+1][c]: -1, r + 1, c],
-      left: [c > 0 ? heights[r][c-1]: -1, r, c-1],
-      right: [c + 1 < heights[0].length ? heights[r][c+1] : -1, r, c+1]
+      up: [r > 0 ? heights[minusR][c] : -1, minusR, c],
+      down: [r + 1 < heights.length ? heights[plusR][c]: -1, plusR, c],
+      left: [c > 0 ? heights[r][minusC]: -1, r, minusC],
+      right: [c + 2 < heights[0].length ? heights[r][plusC] : -1, r, plusC]
     };
+    console.log('directsion pre remova:', directions)
     for(let d in directions) {
-      if (d === prevDirection || directions[d][0] === -1) {
+      if (d === prevDirection || directions[d][0] === -1 || prevValue+1 !== directions[d][0]) {
+        console.log('this was deleted: ', d)
         delete directions[d];
       }
     }
-    console.log(directions)
+    console.log('remaining directions', directions)
     for(let d in directions) {
-      let row = directions[d][1];
-      let col = directions[d][2];
-      let previousD = d === 'up' ? 'down' : d === 'down' ? 'up': d === 'right' ? 'left' : 'right';
-      getSize(row, col,previousD)
+      let val = directions[d][0];
+
+      if (val === prevValue+1) {
+        console.log('row and col:', r, c)
+        let row = directions[d][1];
+        let col = directions[d][2];
+        let previousD = d === 'up' ? 'down' : d === 'down' ? 'up': d === 'right' ? 'left' : 'right';
+        getSize(row, col,previousD, val)
+      }
     }
 
   }
-  getSize(0,1,sampleData, 'start')
-
+  getSize(2,2,'start', sampleData[2][2])
+  console.log(size)
   return size;
   //r-1, r+1, c-1, c+1
 }
