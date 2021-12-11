@@ -23,14 +23,14 @@ class Stack{
 const leftBracks = ['{', '(','<','['];
 const rightBracks = ['}',')','>',']'];
 
-const badLinePts = {
-  ')': 3,
-  ']': 57,
-  '}': 1197,
-  '>': 25137
+const bPts = {
+  ')': 1,
+  ']': 2,
+  '}': 3,
+  '>': 4
 }
 
-const checkBadSyntax = (line) => {
+const checkSyntax = (line) => {
   let stack = new Stack();
   for(let i = 0; i < line.length; i++) {
     let bracket = line[i];
@@ -41,20 +41,35 @@ const checkBadSyntax = (line) => {
       if (matchingBrack === stack.viewTop()) {
         stack.remove();
       } else {
-        return true;
+        return 'bad';
       }
     }
   }
-  return false;
+  return stack.store;
+}
+
+const flipBrackets = (bracketArr) => {
+  return bracketArr.map(b => rightBracks[leftBracks.indexOf(b)])
+}
+
+const getTotal = (brackets, total) => {
+  console.log(brackets)
+  if (brackets.length === 0) {
+    return total;
+  }
+  let b = bPts[brackets[0]];
+  total = total * 5 + b;
+  return getTotal(brackets.slice(1), total);
 }
 
 const checkLinesSyntax = (lines) => {
-  let incompleteLines = lines.filter(line => !checkBadSyntax(line)))
+  let incompleteLines = lines.filter(line => checkSyntax(line)!== 'bad');
+  let completedLines = incompleteLines.map(line => flipBrackets(checkSyntax(line)));
 
+  let pts = completedLines.map(line => getTotal(line, 0)).sort((a,b) => a-b);
+  let medianPt = pts[Math.floor(pts.length/2)]
+  return medianPt
 }
 
-//PART 1
-let badLines = checkLinesSyntax(realData);
-let pts = badLines.map(bracket => badLinePts[bracket]).reduce((prev, curr) => prev + curr, 0);
-console.log(pts)
+checkLinesSyntax(realData);
 
