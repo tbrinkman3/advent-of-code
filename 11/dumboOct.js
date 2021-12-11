@@ -9,32 +9,48 @@ class Octo{
     this.level++;
   }
   hasFlashed() {
+   return this.flashed;
+  }
+  makeFlash(){
     this.flashed = true;
+    this.level = 0;
   }
   resetFlash() {
     this.flashed = false;
   }
 }
 
-const sampleData = fs.readFileSync('sample-input.txt').toString('utf-8').split('\n').map(line => line.split('').map(num => Number(num)));
+const sampleData = fs.readFileSync('sample-input.txt').toString('utf-8').split('\n').map(line => line.split('').map(num => new Octo(Number(num))));
+const miniSample = fs.readFileSync('mini-sample.txt').toString('utf-8').split('\n').map(line => line.split('').map(num => new Octo(Number(num))));
+const realData = fs.readFileSync('input.txt').toString('utf-8').split('\n').map(line => line.split('').map(num => new Octo(Number(num))));
 
 
 
 const getTotalFlashes = (octoGrid, steps) => {
   let totalFlashes = 0;
 
+  const resetOctoFlash = () => {
+    for(let octoLine of octoGrid) {
+      for(let octo of octoLine) {
+        octo.resetFlash();
+      }
+    }
+  }
+
   const spreadOctoFlash = (r,c) => {
     if (r > octoGrid.length -1 || r < 0 || c > octoGrid[0].length -1 || c < 0) {
       return;
     }
-
-    if(octoGrid[r][c] < 10) {
-      octoGrid[r][c]++;
+    if(octoGrid[r][c].level < 10 && octoGrid[r][c].hasFlashed() === false) {
+      octoGrid[r][c].incLevel();
     }
 
-    if (octoGrid[r][c] > 9) {
-      totalFlashes++;
-      octoGrid[r][c] = 0;
+    if (octoGrid[r][c].level > 9 ) {
+      if (octoGrid[r][c].hasFlashed() === false) {
+        totalFlashes++;
+        octoGrid[r][c].makeFlash();
+
+      }
       let dirOutward = [
         [r-1,c],
         [r+1,c],
@@ -49,28 +65,27 @@ const getTotalFlashes = (octoGrid, steps) => {
       for(let dir of dirOutward) {
         spreadOctoFlash(dir[0], dir[1])
       }
+
     }
   }
-  //declare totalFlashes
-  let realStep = 0;
-  //for every step
-  while(steps > -1) {
-    //iterate over octo grid
-    console.log('++++++++');
-    console.log(`Octo grid at step ${realStep}:`, octoGrid)
+
+  while(steps > 0) {
     for(let i = 0; i < octoGrid.length; i++) {
       for(let j = 0; j < octoGrid[0].length; j++) {
-        octoGrid[i][j]++;
-        if(octoGrid[i][j] > 9) {
+        octoGrid[i][j].incLevel();
+      }
+    }
+    for(let i = 0; i < octoGrid.length; i++) {
+      for(let j = 0; j < octoGrid[0].length; j++) {
+        if(octoGrid[i][j].level > 9) {
           spreadOctoFlash(i,j);
         }
       }
     }
-    realStep++;
+    resetOctoFlash();
     steps--;
   }
-  console.log(totalFlashes)
   return totalFlashes;
 }
 
-getTotalFlashes(sampleData, 3)
+console.log(getTotalFlashes(realData, 100))
