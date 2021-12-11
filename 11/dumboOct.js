@@ -28,6 +28,21 @@ const realData = fs.readFileSync('input.txt').toString('utf-8').split('\n').map(
 
 const getTotalFlashes = (octoGrid, steps) => {
   let totalFlashes = 0;
+  let realStep = 0;
+  let allOctoHaveFlashed = false;
+
+  const haveAllOctoFlashed = () => {
+    let allFlashed = true;
+    console.log('started checking')
+    for(let octoLine of octoGrid) {
+      for(let octo of octoLine) {
+        if (octo.level !== 0) {
+          allFlashed = false;
+        }
+      }
+    }
+    return allFlashed;
+  }
 
   const resetOctoFlash = () => {
     for(let octoLine of octoGrid) {
@@ -69,7 +84,7 @@ const getTotalFlashes = (octoGrid, steps) => {
     }
   }
 
-  while(steps > 0) {
+  while(!allOctoHaveFlashed) {
     for(let i = 0; i < octoGrid.length; i++) {
       for(let j = 0; j < octoGrid[0].length; j++) {
         octoGrid[i][j].incLevel();
@@ -82,8 +97,13 @@ const getTotalFlashes = (octoGrid, steps) => {
         }
       }
     }
+
     resetOctoFlash();
-    steps--;
+    realStep++;
+    if (haveAllOctoFlashed(octoGrid)) {
+      allOctoHaveFlashed = true;
+      return realStep;
+    }
   }
   return totalFlashes;
 }
