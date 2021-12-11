@@ -41,7 +41,7 @@ const checkBadSyntax = (line) => {
       if (matchingBrack === stack.viewTop()) {
         stack.remove();
       } else {
-        return bracket;
+        return true;
       }
     }
   }
@@ -49,14 +49,10 @@ const checkBadSyntax = (line) => {
 }
 
 const checkLinesSyntax = (lines) => {
-  let badLines = [];
-  for(let line of lines) {
-    if(checkBadSyntax(line)){
-      badLines.push(checkBadSyntax(line))
-    }
-  }
-  return badLines;
+  let incompleteLines = lines.filter(line => !checkBadSyntax(line)))
+
 }
+
 //PART 1
 let badLines = checkLinesSyntax(realData);
 let pts = badLines.map(bracket => badLinePts[bracket]).reduce((prev, curr) => prev + curr, 0);
