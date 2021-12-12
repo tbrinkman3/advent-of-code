@@ -2,27 +2,11 @@ var fs = require('fs');
 
 const smallSample = fs.readFileSync('sample-input-small.txt').toString('utf-8').split('\n').map(i => i.split('-'));
 
-console.log(smallSample)
-
-class Cave{
-  constructor(name) {
-    this.name = name,
-    this.isLarge = false,
-    this.hasBeenVisited = false
-  }
-  visitCave(){
-    this.hasBeenVisited = true;
-  }
-  isCaveLarge(){
-    this.isLarge = /^[A-Z]*$/.test(this.name)
-  }
-}
-
 class CaveSystem{
   constructor(){
     this.caves = {};
-    this.largeCaves = {};
-    this.smallCaves = {};
+    this.largeCaves = [];
+    this.smallCaves = [];
   }
   addCave(cave){
     if(!this.caves[cave]){
@@ -42,9 +26,9 @@ class CaveSystem{
   classifyCaves(){
     for(let c in this.caves) {
       if(/^[A-Z]*$/.test(c)){
-        this.largeCaves[c] = 0;
+        this.largeCaves.push(c);
       }else {
-        this.smallCaves[c] = 0;
+        this.smallCaves.push(c);
       }
     }
   }
@@ -59,8 +43,6 @@ class CaveSystem{
   }
 }
 
-
-
 const createCaveSystem = (input) => {
   const findUniqueCaves = (caveConnections) => {
     return Array.from(new Set(caveConnections.flat()))
@@ -74,15 +56,24 @@ const createCaveSystem = (input) => {
   for(let c of input) {
     caveSystem.createConnection(c[0], c[1])
   }
-  return caveSystem
+  return caveSystem;
 }
 
 
-let caveSystem = createCaveSystem(smallSample)
-caveSystem.classifyCaves();
+const mapCaveSystem = (input) => {
+  let paths = 0;
+  let caveSystem = createCaveSystem(input);
+  caveSystem.classifyCaves();
 
-caveSystem.visitCave('b')
+  console.log(caveSystem.caves)
 
+  const trackPath = (currCave,visitedSmallCaves,largeCaves,path) => {
+//maybe start at first path??
+  }
 
+  trackPath('start',[], caveSystem.largeCaves, []);
 
-console.log(caveSystem)
+  console.log(paths)
+}
+
+mapCaveSystem(smallSample)
