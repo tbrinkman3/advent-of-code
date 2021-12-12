@@ -48,6 +48,15 @@ class CaveSystem{
       }
     }
   }
+  visitCave(cave){
+    if(this.caves[cave]) {
+      if(this.largeCaves[cave]>=0){
+        this.largeCaves[cave]++;
+      }else {
+        this.smallCaves[cave]++;
+      }
+    }
+  }
 }
 
 
@@ -72,6 +81,8 @@ const createCaveSystem = (input) => {
 let caveSystem = createCaveSystem(smallSample)
 caveSystem.classifyCaves();
 
-console.log(caveSystem.largeCaves)
+caveSystem.visitCave('b')
 
-//console.log(createCaveSystem(smallSample))
+
+
+console.log(caveSystem)
